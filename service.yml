@@ -1,0 +1,4 @@
+service_name: document-service
+repository_technique: mongodb
+group_id: org.lecture
+artifact_id: document-service
