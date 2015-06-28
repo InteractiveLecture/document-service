@@ -15,7 +15,7 @@ package org.lecture.integration.tutorial;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import org.asdf.model.Tutorial;
+import org.lecture.model.Tutorial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;

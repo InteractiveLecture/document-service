@@ -18,16 +18,10 @@ package org.lecture.controller;
 import org.lecture.assembler.TutorialAssembler;
 import org.lecture.model.Tutorial;
 import org.lecture.parser.TutorialProcessor;
-import org.lecture.resource.TutorialResource;
 import org.lecture.repository.TutorialRepository;
-import org.pegdown.PegDownProcessor;
+import org.lecture.resource.TutorialResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ExposesResourceFor;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,7 +62,7 @@ public class TutorialController extends BaseController {
    * @return a response.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<TutorialResource> getOne(@PathVariable Long id) {
+  public ResponseEntity<TutorialResource> getOne(@PathVariable String id) {
 
     TutorialProcessor tutorialProcessor = new TutorialProcessor();
     Tutorial tutorial =
@@ -78,21 +72,22 @@ public class TutorialController extends BaseController {
   }
 
   @RequestMapping(value = "/{id}/raw", method = RequestMethod.GET)
-  public ResponseEntity<TutorialResource> getOneRaw(@PathVariable Long id) {
+  public ResponseEntity<TutorialResource> getOneRaw(@PathVariable String id) {
     TutorialResource result
             = tutorialAssembler.toResource(tutorialRepository.findOne(id));
     return ResponseEntity.ok().body(result);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<?> delete(@PathVariable Long id) {
+  public ResponseEntity<?> delete(@PathVariable String id) {
     tutorialRepository.delete(id);
     return ResponseEntity.noContent().build();
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<?> update(@PathVariable Long id,
+  public ResponseEntity<?> update(@PathVariable String id,
                                   @RequestBody Tutorial newValues) {
+    //TODO patch-Framework einführen!
     tutorialRepository.save(newValues);
     return ResponseEntity.noContent().build();
   }

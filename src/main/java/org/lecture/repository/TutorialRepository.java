@@ -16,7 +16,6 @@ package org.lecture.repository;
 */
 
 import org.lecture.model.Tutorial;
-import org.springframework.stereotype.Repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
@@ -25,6 +24,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 * A repository for Tutorials
 * @author Rene Richter
 */
-public interface TutorialRepository extends MongoRepository<Tutorial,Long> {
+public interface TutorialRepository extends MongoRepository<Tutorial,String> {
 
 }

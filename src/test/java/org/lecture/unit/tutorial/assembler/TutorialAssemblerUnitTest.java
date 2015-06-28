@@ -15,18 +15,17 @@ package org.lecture.unit.tutorial.assembler;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import static org.junit.Assert.assertEquals;
-
-import org.lecture.assembler.TutorialAssembler;
-import org.lecture.model.Tutorial;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lecture.assembler.TutorialAssembler;
+import org.lecture.model.Tutorial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for Tutorial assemblers.
@@ -45,7 +44,7 @@ public class TutorialAssemblerUnitTest {
   @Test
   public void testToResource() throws Exception {
     Tutorial instance = new Tutorial();
-    instance.setId(1L);
+    instance.setId("1");
     ResourceSupport resourceSupport = testInstance.toResource(instance);
     assertEquals("self",resourceSupport.getId().getRel());
   }

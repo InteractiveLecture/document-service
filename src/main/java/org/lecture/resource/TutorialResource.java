@@ -15,8 +15,12 @@ package org.lecture.resource;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import org.lecture.model.Author;
 import org.lecture.model.Tutorial;
 import org.springframework.hateoas.ResourceSupport;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * A Tutorial-resource.
