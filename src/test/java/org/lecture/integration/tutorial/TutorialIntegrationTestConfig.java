@@ -18,6 +18,7 @@ package org.lecture.integration.tutorial;
 import com.mongodb.Mongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -39,7 +41,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
     "org.lecture.controller",
     "org.lecture.assembler",
     "org.lecture.resource",
-    "org.lecture.integration"})
+    "org.lecture.integration",
+    "org.lecture.integration.config"})
 
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 @EnableSpringDataWebSupport
@@ -48,12 +51,4 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableMongoRepositories(basePackages = "org.lecture.repository")
 @EnableTransactionManagement
 public class TutorialIntegrationTestConfig extends WebMvcConfigurerAdapter {
-
-  @Autowired
-  Mongo mongo;
-
-  @Bean
-  public MongoTemplate mongoTemplate() {
-    return new MongoTemplate(mongo, "Tutorial");
-  }
 }

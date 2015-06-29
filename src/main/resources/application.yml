@@ -15,26 +15,21 @@ spring:
   
 
     mongodb:
-      host: localhost # the db host
-      port: 27017 # the connection port (defaults to 27107)
-      uri: mongodb://localhost/test # connection URL
-      database: test
-      #authentication-database:
-      #grid-fs-database:
-      username: test
-      password: test
-      repositories.enabled: true # if spring data repository support is enabled
-
-
-  
+        host: localhost # the db host
+        port: 27017 # the connection port (defaults to 27107)
+        uri: mongodb://localhost/java-evaluation-service-test # connection URL
+        database: development
+        #authentication-database:
+        #grid-fs-database:
+        #username: test
+        #password: test
+        #repositories.enabled: true # if spring data repository support is enabled
 
 
 ---
 
-
-
 spring:
-  profiles: test-server
+  profiles: test
   data:
     rest:
       basePath: / #root URI for Spring Data REST
@@ -47,17 +42,20 @@ spring:
       returnBodyOnCreate: false #change if a body should be returned on creating a new entity
       returnBodyOnupdate: false #change if a body should be returned on updating an entity
 
-
     mongodb:
       host: mongo # the db host
       port: 27017 # the connection port (defaults to 27107)
-      #uri: mongo://mongodb/test # connection URL
+      uri: mongodb://mongo/java-evaluation-service-test # connection URL
       database: test
       #authentication-database:
       #grid-fs-database:
-      username: test
-      password: test
+      #username: test
+      #password: test
       repositories.enabled: true # if spring data repository support is enabled
+
+
+  
+
 
 ---
 
