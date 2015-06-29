@@ -18,6 +18,7 @@ package org.lecture.controller;
 import org.lecture.assembler.TutorialAssembler;
 import org.lecture.model.Tutorial;
 import org.lecture.parser.TutorialProcessor;
+import org.lecture.patchservice.PatchService;
 import org.lecture.repository.TutorialRepository;
 import org.lecture.resource.TutorialResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,11 +85,14 @@ public class TutorialController extends BaseController {
     return ResponseEntity.noContent().build();
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
   public ResponseEntity<?> update(@PathVariable String id,
-                                  @RequestBody Tutorial newValues) {
-    //TODO patch-Framework einführen!
-    tutorialRepository.save(newValues);
+                                  @RequestBody String patch) {
+
+    PatchService patchService = new PatchService();
+    Tutorial tutorial = tutorialRepository.findOne(id);
+    tutorial.setContent(patchService.patch(tutorial.getContent(),patch));
+    tutorialRepository.save(tutorial);
     return ResponseEntity.noContent().build();
   }
 

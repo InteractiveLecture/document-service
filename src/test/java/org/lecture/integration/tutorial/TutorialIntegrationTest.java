@@ -86,13 +86,7 @@ public class TutorialIntegrationTest {
   }
 
 
-  @Test
-  public void testGetTutorials() throws Exception {
 
-    mockMvc.perform(get("/tutorials"))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaTypes.HAL_JSON));
-  }
 
   @Test
   public void testGetAll()

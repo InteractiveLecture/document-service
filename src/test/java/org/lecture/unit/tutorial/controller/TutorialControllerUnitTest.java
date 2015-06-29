@@ -69,11 +69,11 @@ public class TutorialControllerUnitTest {
     Tutorial instance = new Tutorial();
     instance.setId("1");
     TutorialResource testResource = new TutorialResource(instance);
-    when(tutorialRepository.findOne(1L)).thenReturn(instance);
+    when(tutorialRepository.findOne("1")).thenReturn(instance);
     when(tutorialAssembler.toResource(instance)).thenReturn(testResource);
     ResponseEntity response = testInstance.getOne("1");
     assertEquals(200,response.getStatusCode().value());
-    verify(tutorialRepository, times(1)).findOne(1L);
+    verify(tutorialRepository, times(1)).findOne("1");
     verify(tutorialAssembler, times(1)).toResource(instance);
   }
 }

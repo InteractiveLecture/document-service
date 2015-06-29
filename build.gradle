@@ -36,6 +36,10 @@ repositories {
     url 'http://repo.spring.io/libs-snapshot'
   }
 
+  maven  {
+    url "http://artifacts.rene-richter.de/content/repositories/releases"
+  }
+
 
 
 }
@@ -83,6 +87,8 @@ dependencies {
 
 
   testCompile 'com.github.fakemongo:fongo:1.6.2'
+
+  compile 'org.lecture:patch-lib:1.0.0-RELEASE'
   
 
 
