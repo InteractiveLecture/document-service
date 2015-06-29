@@ -15,8 +15,8 @@ package org.lecture.integration.tutorial;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,8 +28,10 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
 /**
  * Configuration class for org.lecture integration test.
+ *
  * @author Rene Richter
  */
 @Configuration
@@ -47,14 +49,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableTransactionManagement
 public class TutorialIntegrationTestConfig extends WebMvcConfigurerAdapter {
 
-  @Bean
-  public Mongo mongo() {
-    Fongo fongo = new Fongo("test");
-    return fongo.getMongo();
-   }
-    
+  @Autowired
+  Mongo mongo;
+
   @Bean
   public MongoTemplate mongoTemplate() {
-    return new MongoTemplate(mongo(),"Tutorial");
+    return new MongoTemplate(mongo, "Tutorial");
   }
 }

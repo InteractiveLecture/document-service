@@ -17,8 +17,8 @@ package org.lecture.unit.tutorial.controller;
 
 
 import org.lecture.assembler.TutorialAssembler;
-import org.lecture.repository.TutorialRepository;
 import org.lecture.controller.TutorialController;
+import org.lecture.repository.TutorialRepository;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +27,10 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration for Tutorial controller unit tests.
-* @author Rene Richter
-*/
+ * Configuration for Tutorial controller unit tests.
+ *
+ * @author Rene Richter
+ */
 @Configuration
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class TutorialControllerUnitTestConfig {
@@ -42,7 +43,7 @@ public class TutorialControllerUnitTestConfig {
 
   @Bean
   public LoadBalancerClient loadBalancerClient() {
-    return  Mockito.mock(LoadBalancerClient.class);
+    return Mockito.mock(LoadBalancerClient.class);
   }
 
   @Bean

@@ -19,6 +19,7 @@ import org.lecture.assembler.TutorialAssembler;
 import org.lecture.model.Tutorial;
 import org.lecture.parser.TutorialProcessor;
 import org.lecture.patchservice.PatchService;
+import org.lecture.patchservice.dmp.DmpPatchService;
 import org.lecture.repository.TutorialRepository;
 import org.lecture.resource.TutorialResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * A controller for Tutorial Routes.
+ *
  * @author Rene Richter
  */
 @RestController
@@ -48,7 +50,7 @@ public class TutorialController extends BaseController {
 
   /**
    * @param entity the tutorial from the post-request. This tutorial is deserialized by
-   *              jackson.
+   *               jackson.
    * @return A respoonse containing a link to the new resource.
    */
   @RequestMapping(method = RequestMethod.POST)
@@ -57,12 +59,13 @@ public class TutorialController extends BaseController {
   }
 
   /**
-   * Returns one Tutorial.
+   * Returns one Tutorial in html format.
    *
    * @param id the id of the topic to return.
    * @return a response.
    */
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{id}",
+      method = RequestMethod.GET, produces = "application/hal+json;charset=UTF-8")
   public ResponseEntity<TutorialResource> getOne(@PathVariable String id) {
 
     TutorialProcessor tutorialProcessor = new TutorialProcessor();
@@ -72,26 +75,45 @@ public class TutorialController extends BaseController {
     return ResponseEntity.ok().body(result);
   }
 
-  @RequestMapping(value = "/{id}/raw", method = RequestMethod.GET)
+  /**
+   * Returns one Tutorial in the original format.
+   *
+   * @param id the id of the topic to return.
+   * @return a response.
+   */
+  @RequestMapping(value = "/{id}/raw",
+      method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
   public ResponseEntity<TutorialResource> getOneRaw(@PathVariable String id) {
     TutorialResource result
-            = tutorialAssembler.toResource(tutorialRepository.findOne(id));
+        = tutorialAssembler.toResource(tutorialRepository.findOne(id));
     return ResponseEntity.ok().body(result);
   }
 
+  /**
+   * Deletes one tutorial.
+   * @param id The tutorial id.
+   * @return a response.
+   */
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   public ResponseEntity<?> delete(@PathVariable String id) {
     tutorialRepository.delete(id);
     return ResponseEntity.noContent().build();
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+  /**
+   * Patches the content of one tutorial with a diff-match-patch patch.
+   * @param id the id of the tutorial.
+   * @param patch the patch to submit.
+   * @return a response.
+   */
+  @RequestMapping(value = "/{id}",
+      method = RequestMethod.PATCH, consumes = "text/plain;charset=UTF-8")
   public ResponseEntity<?> update(@PathVariable String id,
                                   @RequestBody String patch) {
 
-    PatchService patchService = new PatchService();
+    PatchService patchService = new DmpPatchService();
     Tutorial tutorial = tutorialRepository.findOne(id);
-    tutorial.setContent(patchService.patch(tutorial.getContent(),patch));
+    tutorial.setContent(patchService.applyPatch(tutorial.getContent(), patch));
     tutorialRepository.save(tutorial);
     return ResponseEntity.noContent().build();
   }

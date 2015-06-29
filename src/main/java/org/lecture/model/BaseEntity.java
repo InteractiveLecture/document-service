@@ -14,9 +14,12 @@ package org.lecture.model;
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+
 import org.springframework.hateoas.Identifiable;
+
 /**
  * A mongodb-base entity.
+ *
  * @author Rene Richter
  */
 public class BaseEntity implements Identifiable<String> {
@@ -24,10 +27,10 @@ public class BaseEntity implements Identifiable<String> {
   private String id;
 
   public String getId() {
-      return id;
+    return id;
   }
 
   public void setId(String id) {
-      this.id = id;
+    this.id = id;
   }
 }

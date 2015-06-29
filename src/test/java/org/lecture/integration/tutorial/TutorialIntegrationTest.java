@@ -14,55 +14,39 @@ package org.lecture.integration.tutorial;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static util.TestUtil.toJson;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static util.TestUtil.TEXT_PLAIN_UTF8;
+import static util.TestUtil.toJson;
 
-
-import org.lecture.model.Tutorial;
-import org.lecture.integration.tutorial.TutorialIntegrationTestConfig;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lecture.model.Tutorial;
+import org.lecture.patchservice.PatchService;
+import org.lecture.patchservice.dmp.DmpPatchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import util.TestUtil;
 
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static util.TestUtil.toJson;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
- * A integration test for Tutorials
+ * A integration test for Tutorials.
+ *
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -71,9 +55,9 @@ import static util.TestUtil.toJson;
 //TODO add custom sample-data in tutorialSampleData.java
 public class TutorialIntegrationTest {
 
+  @Autowired
+  TutorialSampleData sampleData;
   private MockMvc mockMvc;
-
-
   @Autowired
   private WebApplicationContext webApplicationContext;
 
@@ -82,18 +66,22 @@ public class TutorialIntegrationTest {
    */
   @Before
   public void setUp() {
+    sampleData.seed();
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
   }
 
-
+  @After
+  public void destroy() {
+    sampleData.destroy();
+  }
 
 
   @Test
-  public void testGetAll()
+  public void testGetOne()
       throws Exception {
     mockMvc.perform(get("/tutorials/1"))
         .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaTypes.HAL_JSON))
+        .andExpect(content().contentType("application/hal+json;charset=UTF-8"))
         .andExpect(
             jsonPath("$._links.self.href", is("http://localhost/tutorials/1")));
   }
@@ -104,5 +92,25 @@ public class TutorialIntegrationTest {
         .contentType(TestUtil.APPLICATION_JSON_UTF8)
         .content(toJson(new Tutorial())))
         .andExpect(status().isCreated());
+  }
+
+  @Test
+  public void testPatch() throws Exception {
+
+    String original = "Hallo Welt!";
+
+    String modified = new String(
+        Files.readAllBytes(Paths.get(getClass().getResource("/modified.md").toURI())));
+
+    PatchService ps = new DmpPatchService();
+
+    String patch = ps.createPatch(original, modified);
+    mockMvc.perform(patch("/tutorials/1").content(patch).contentType(TEXT_PLAIN_UTF8))
+        .andExpect(status().isNoContent());
+
+    mockMvc.perform(get("/tutorials/1/raw"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content", is(modified)));
+
   }
 }

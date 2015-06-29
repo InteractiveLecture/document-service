@@ -20,20 +20,20 @@ import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration class for Tutorial unit tests.
-* @author Rene Richter
-*/
+ * Configuration class for Tutorial unit tests.
+ *
+ * @author Rene Richter
+ */
 @Configuration
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class TutorialAssemblerUnitTestConfig {
 
   @Bean
   public LoadBalancerClient loadBalancerClient() {
-    return  Mockito.mock(LoadBalancerClient.class);
+    return Mockito.mock(LoadBalancerClient.class);
   }
 
   @Bean

@@ -27,22 +27,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
-* A basecontroller for shared functionality.
-*
-* @author Rene Richter
-*/
+ * A basecontroller for shared functionality.
+ *
+ * @author Rene Richter
+ */
 @Component
 public abstract class BaseController {
 
   @Autowired
   EntityLinks entityLinks;
+
   /**
-  * A conviniencemethod for creating new Entities.
-  *
-  * @param newEntity The entity that should be created
-  * @param <T>       Type of the entity that should get created
-  * @return The formal Response for the childcontroller.
-  */
+   * A conviniencemethod for creating new Entities.
+   *
+   * @param newEntity The entity that should be created
+   * @param <T>       Type of the entity that should get created
+   * @return The formal Response for the childcontroller.
+   */
   public <T extends BaseEntity> ResponseEntity<?> createEntity(T newEntity) {
 
     return ResponseEntity
@@ -53,9 +54,8 @@ public abstract class BaseController {
   @ExceptionHandler(ResourceNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public String handleNotFound(ResourceNotFoundException ex) {
-   return ex.toString();
+    return ex.toString();
   }
-
 
 
   @ExceptionHandler(NotCreatedException.class)

@@ -24,89 +24,89 @@ import java.util.List;
 
 /**
  * A Tutorial-resource.
+ *
  * @author Rene Richter
  */
 public class TutorialResource extends ResourceSupport {
-  
+
   private List<Author> authors;
-  
+
   private String title;
-  
+
   private String content;
-  
+
   private String format;
-  
+
   private LocalDate publishingDate;
-  
+
   private LocalDate lastChangedDate;
-  
+
 
   /**
    * Reads all attributes from entity that should get serialized.
    */
-  public  TutorialResource( Tutorial entity) {
-    
-    this.authors = entity.getAuthors();
-    
-    this.title = entity.getTitle();
-    
-    this.content = entity.getContent();
-    
-    this.format = entity.getFormat();
-    
-    this.publishingDate = entity.getPublishingdate();
-    
-    this.lastChangedDate = entity.getLastchangeddate();
-    
-  }
+  public TutorialResource(Tutorial entity) {
 
-  
-  public void setAuthors(List<Author> authors) {
-    this.authors = authors;
+    this.authors = entity.getAuthors();
+
+    this.title = entity.getTitle();
+
+    this.content = entity.getContent();
+
+    this.format = entity.getFormat();
+
+    this.publishingDate = entity.getPublishingdate();
+
+    this.lastChangedDate = entity.getLastchangeddate();
+
   }
 
   public List<Author> getAuthors() {
     return this.authors;
   }
-  
-  public void setTitle(String title) {
-    this.title = title;
+
+  public void setAuthors(List<Author> authors) {
+    this.authors = authors;
   }
 
   public String getTitle() {
     return this.title;
   }
-  
-  public void setContent(String content) {
-    this.content = content;
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public String getContent() {
     return this.content;
   }
-  
-  public void setFormat(String format) {
-    this.format = format;
+
+  public void setContent(String content) {
+    this.content = content;
   }
 
   public String getFormat() {
     return this.format;
   }
-  
-  public void setPublishingdate(LocalDate publishingDate) {
-    this.publishingDate = publishingDate;
+
+  public void setFormat(String format) {
+    this.format = format;
   }
 
   public LocalDate getPublishingdate() {
     return this.publishingDate;
   }
-  
-  public void setLastchangeddate(LocalDate lastChangedDate) {
-    this.lastChangedDate = lastChangedDate;
+
+  public void setPublishingdate(LocalDate publishingDate) {
+    this.publishingDate = publishingDate;
   }
 
   public LocalDate getLastchangeddate() {
     return this.lastChangedDate;
   }
-  
+
+  public void setLastchangeddate(LocalDate lastChangedDate) {
+    this.lastChangedDate = lastChangedDate;
+  }
+
 }

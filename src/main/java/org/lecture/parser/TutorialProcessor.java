@@ -32,6 +32,11 @@ public class TutorialProcessor {
   private String resultFormat = "HTML";
 
 
+  /**
+   * Compiles the format to html.
+   * @param tutorial the tutorial that should get processed.
+   * @return the modified tutorial.
+   */
   public Tutorial processTutorial(Tutorial tutorial) {
     resolveParseStrategy(tutorial.getFormat());
     String newContent = parseStrategy.parseContent(tutorial.getContent());
@@ -44,7 +49,8 @@ public class TutorialProcessor {
   //TODO extends list of parsers.
   private void resolveParseStrategy(String format) {
     switch (format) {
-      case "MARKDOWN" : this.parseStrategy = new MarkdownParseStrategy();
+      case "MARKDOWN":
+        this.parseStrategy = new MarkdownParseStrategy();
         break;
       default:
         this.parseStrategy = new FallThroughParseStrategy();

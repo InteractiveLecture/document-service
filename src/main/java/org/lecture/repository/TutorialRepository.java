@@ -19,11 +19,11 @@ import org.lecture.model.Tutorial;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
-
 /**
-* A repository for Tutorials
-* @author Rene Richter
-*/
-public interface TutorialRepository extends MongoRepository<Tutorial,String> {
+ * A repository for Tutorials.
+ *
+ * @author Rene Richter
+ */
+public interface TutorialRepository extends MongoRepository<Tutorial, String> {
 
 }

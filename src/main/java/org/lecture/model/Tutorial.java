@@ -22,6 +22,7 @@ import java.util.List;
 
 /**
  * Entity that represents Tutorials.
+ *
  * @author Rene Richter
  */
 @Document
@@ -33,15 +34,17 @@ public class Tutorial extends BaseEntity {
   private String format;
   private LocalDate publishingDate;
   private LocalDate lastChangedDate;
-  
 
-  public Tutorial(){}
+
+  public Tutorial() {
+  }
 
 
   /**
    * a convenience constructor.
    */
-  public  Tutorial(List<Author> authors,String title,String content,String format,LocalDate publishingDate,LocalDate lastChangedDate) {
+  public Tutorial(List<Author> authors, String title, String content,
+                  String format, LocalDate publishingDate, LocalDate lastChangedDate) {
 
     this.authors = authors;
     this.title = title;
@@ -49,56 +52,55 @@ public class Tutorial extends BaseEntity {
     this.format = format;
     this.publishingDate = publishingDate;
     this.lastChangedDate = lastChangedDate;
-    
-  }
 
-  
-  public void setAuthors(List<Author> authors) {
-    this.authors = authors;
   }
 
   public List<Author> getAuthors() {
     return this.authors;
   }
-  
-  public void setTitle(String title) {
-    this.title = title;
+
+  public void setAuthors(List<Author> authors) {
+    this.authors = authors;
   }
 
   public String getTitle() {
     return this.title;
   }
-  
-  public void setContent(String content) {
-    this.content = content;
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public String getContent() {
     return this.content;
   }
-  
-  public void setFormat(String format) {
-    this.format = format;
+
+  public void setContent(String content) {
+    this.content = content;
   }
 
   public String getFormat() {
     return this.format;
   }
-  
-  public void setPublishingdate(LocalDate publishingDate) {
-    this.publishingDate = publishingDate;
+
+  public void setFormat(String format) {
+    this.format = format;
   }
 
   public LocalDate getPublishingdate() {
     return this.publishingDate;
   }
-  
-  public void setLastchangeddate(LocalDate lastChangedDate) {
-    this.lastChangedDate = lastChangedDate;
+
+  public void setPublishingdate(LocalDate publishingDate) {
+    this.publishingDate = publishingDate;
   }
 
   public LocalDate getLastchangeddate() {
     return this.lastChangedDate;
   }
-  
+
+  public void setLastchangeddate(LocalDate lastChangedDate) {
+    this.lastChangedDate = lastChangedDate;
+  }
+
 }

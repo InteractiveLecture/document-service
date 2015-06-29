@@ -14,19 +14,7 @@ package org.lecture.unit.tutorial.controller;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.lecture.assembler.TutorialAssembler;
-import org.lecture.controller.TutorialController;
-import org.lecture.model.Tutorial;
-import org.lecture.repository.TutorialRepository;
-import org.lecture.resource.TutorialResource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.reset;
@@ -34,10 +22,31 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.lecture.assembler.TutorialAssembler;
+import org.lecture.controller.TutorialController;
+import org.lecture.model.Tutorial;
+import org.lecture.patchservice.dmp.DmpPatchService;
+import org.lecture.repository.TutorialRepository;
+import org.lecture.resource.TutorialResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
 /**
-* Unit test for Tutorial controllers.
-* @author Rene Richter
-*/
+ * Unit test for Tutorial controllers.
+ *
+ * @author Rene Richter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TutorialControllerUnitTestConfig.class})
 public class TutorialControllerUnitTest {
@@ -60,7 +69,7 @@ public class TutorialControllerUnitTest {
    */
   @Before
   public void setUp() {
-    reset(tutorialRepository,tutorialAssembler,pagedResourcesAssembler);
+    reset(tutorialRepository, tutorialAssembler, pagedResourcesAssembler);
   }
 
 
@@ -68,12 +77,38 @@ public class TutorialControllerUnitTest {
   public void getOneShouldReturnResponseContainingTheDataOfOneTutorialAsJson() throws Exception {
     Tutorial instance = new Tutorial();
     instance.setId("1");
+    instance.setFormat("MARKDOWN");
+    instance.setContent("# Hallo Welt!");
     TutorialResource testResource = new TutorialResource(instance);
     when(tutorialRepository.findOne("1")).thenReturn(instance);
     when(tutorialAssembler.toResource(instance)).thenReturn(testResource);
     ResponseEntity response = testInstance.getOne("1");
-    assertEquals(200,response.getStatusCode().value());
+    assertEquals(200, response.getStatusCode().value());
     verify(tutorialRepository, times(1)).findOne("1");
     verify(tutorialAssembler, times(1)).toResource(instance);
+  }
+
+
+  @Test
+  public void patchShouldPatchADocumentWithNewContent() throws Exception {
+    String original = new String(
+        Files.readAllBytes(Paths.get(getClass().getResource("/original.md").toURI())));
+
+    Tutorial instance = new Tutorial();
+    instance.setId("1");
+    instance.setContent(original);
+    instance.setFormat("MARKDOWN");
+    TutorialResource testResource = new TutorialResource(instance);
+    when(tutorialRepository.findOne("1")).thenReturn(instance);
+
+    String modified = new String(
+        Files.readAllBytes(Paths.get(getClass().getResource("/modified.md").toURI())));
+    String patch = new DmpPatchService().createPatch(original, modified);
+    ResponseEntity<?> response = testInstance.update("1", patch);
+
+    assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+    assertEquals(instance.getContent(), modified);
+
   }
 }

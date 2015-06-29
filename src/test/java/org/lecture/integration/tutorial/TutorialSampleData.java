@@ -21,22 +21,29 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
 
-
 @Component
 public class TutorialSampleData {
 
   @Autowired
   MongoOperations mongoOperations;
 
+  /**
+   * seeds the database.
+   */
   public void seed() {
 
     for (int i = 0; i < 10; i++) {
-      Tutorial b = new Tutorial();
-      b.setId(String.valueOf(i));
-      mongoOperations.save(b);
+      Tutorial tutorial = new Tutorial();
+      tutorial.setId(String.valueOf(i));
+      tutorial.setContent("Hallo Welt!");
+      tutorial.setFormat("MARKDOWN");
+      mongoOperations.save(tutorial);
     }
   }
 
+  /**
+   * removes data from database.
+   */
   public void destroy() {
     mongoOperations.dropCollection("Tutorial");
   }

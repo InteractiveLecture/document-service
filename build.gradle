@@ -37,7 +37,7 @@ repositories {
   }
 
   maven  {
-    url "http://artifacts.rene-richter.de/content/repositories/releases"
+    url "http://artifacts.rene-richter.de/content/repositories/snapshots"
   }
 
 
@@ -88,7 +88,7 @@ dependencies {
 
   testCompile 'com.github.fakemongo:fongo:1.6.2'
 
-  compile 'org.lecture:patch-lib:1.0.0-RELEASE'
+  compile 'org.lecture:patch-lib:latest.integration'
   
 
 
